@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProcessNotifications implements JavaDelegate {
+public class ProcessNotification implements JavaDelegate {
 
     private Logger logger = LoggerFactory.getLogger("LOAN-REQUESTS");
 

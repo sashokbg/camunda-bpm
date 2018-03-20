@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ProcessRequest implements JavaDelegate {
+public class ProcessCarRent implements JavaDelegate {
 
-    private Logger logger = LoggerFactory.getLogger(ProcessRequest.class);
+    private Logger logger = LoggerFactory.getLogger(ProcessCarRent.class);
 
     public void execute(DelegateExecution execution) {
         logger.info("SPRING BOOT Processing request by '" + execution.getVariable("customerId") + "'...");

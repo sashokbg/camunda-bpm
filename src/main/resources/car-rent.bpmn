@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:tns="http://bpmn.io/schema/bpmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" name="" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.11.3">
   <bpmn:process id="approve-car-rent-process" processType="None" isClosed="false" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1" camunda:formKey="embedded:app:forms/request-car.html">
-      <bpmn:outgoing>SequenceFlow_1pnkor4</bpmn:outgoing>
-    </bpmn:startEvent>
-    <bpmn:userTask id="approve-car-rent-task" name="Manually Approve Car Rent" camunda:formKey="embedded:app:forms/approve-car.html" camunda:assignee="john" activiti:exclusive="true">
+    <bpmn:userTask id="approve-car-rent-task" name="Manually Approve Car Rent" camunda:formKey="embedded:app:forms/manually-approve-car.html" camunda:assignee="john" activiti:exclusive="true">
       <bpmn:incoming>SequenceFlow_02pk961</bpmn:incoming>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_1okr235" sourceRef="approve-car-rent-task" targetRef="approve-car-rent" />
-    <bpmn:serviceTask id="approve-car-rent" name="Process Car Rent" camunda:class="com.d2f.camunda.rentacar.ProcessRequest" activiti:exclusive="true">
+    <bpmn:serviceTask id="approve-car-rent" name="Process Car Rent" camunda:class="com.d2f.camunda.rentacar.ProcessCarRent" activiti:exclusive="true">
       <bpmn:incoming>SequenceFlow_1a8thvv</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0lynptw</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -18,18 +15,17 @@
     <bpmn:sequenceFlow id="SequenceFlow_0lynptw" sourceRef="approve-car-rent" targetRef="rent-a-car-notify" />
     <bpmn:sequenceFlow id="SequenceFlow_069jrux" sourceRef="rent-a-car-notify" targetRef="Task_0grldw0" />
     <bpmn:sequenceFlow id="SequenceFlow_0cf6ajh" sourceRef="Task_0grldw0" targetRef="EndEvent_19ac2tw" />
-    <bpmn:serviceTask id="Task_0grldw0" name="Process Notification" camunda:class="com.d2f.camunda.rentacar.ProcessNotifications">
+    <bpmn:serviceTask id="Task_0grldw0" name="Process Notification" camunda:class="com.d2f.camunda.rentacar.ProcessNotification">
       <bpmn:incoming>SequenceFlow_069jrux</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0cf6ajh</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="rent-a-car-notify" name="Notify User" camunda:formKey="embedded:app:forms/notify.html" camunda:assignee="alex">
+    <bpmn:userTask id="rent-a-car-notify" name="Notify User" camunda:formKey="embedded:app:forms/notify-user.html" camunda:assignee="alex">
       <bpmn:incoming>SequenceFlow_0lynptw</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_069jrux</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_1pnkor4" sourceRef="StartEvent_1" targetRef="Task_17cp01h" />
     <bpmn:sequenceFlow id="SequenceFlow_1a8thvv" sourceRef="Task_03ur8ra" targetRef="approve-car-rent" />
     <bpmn:exclusiveGateway id="car-rent-auto-validate">
-      <bpmn:incoming>SequenceFlow_0tpt2j4</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_07fp6dl</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_02pk961</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1ov7gab</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -43,20 +39,21 @@
       <bpmn:incoming>SequenceFlow_1ov7gab</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1a8thvv</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:userTask id="Task_17cp01h" name="Create Car Rent" camunda:formKey="embedded:app:forms/approve-car.html">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:executionListener class="com.d2f.camunda.rentacar.AvailableCars" event="end" />
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_1pnkor4</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1pnkor4" sourceRef="StartEvent_1" targetRef="fill-user-info" />
+    <bpmn:sequenceFlow id="SequenceFlow_07fp6dl" sourceRef="fill-user-info" targetRef="car-rent-auto-validate" />
+    <bpmn:userTask id="fill-user-info" name="Fill User Info" camunda:formKey="embedded:app:forms/fill-user-info.html" camunda:assignee="admin">
       <bpmn:incoming>SequenceFlow_1pnkor4</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0tpt2j4</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_07fp6dl</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="SequenceFlow_0tpt2j4" sourceRef="Task_17cp01h" targetRef="car-rent-auto-validate" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="Diagram-_1" name="New Diagram" documentation="background=#FFFFFF;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0">
     <bpmndi:BPMNPlane bpmnElement="approve-car-rent-process">
-      <bpmndi:BPMNShape id="Shape-StartEvent_1" bpmnElement="StartEvent_1">
-        <dc:Bounds x="122" y="-100" width="32" height="32" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="-80" y="-202" width="90" height="32" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Shape-approve-car-rent-task" bpmnElement="approve-car-rent-task">
         <dc:Bounds x="90" y="305" width="100" height="80" />
         <bpmndi:BPMNLabel>
@@ -115,13 +112,6 @@
       <bpmndi:BPMNShape id="UserTask_1dzenv8_di" bpmnElement="rent-a-car-notify">
         <dc:Bounds x="557" y="305" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1pnkor4_di" bpmnElement="SequenceFlow_1pnkor4">
-        <di:waypoint xsi:type="dc:Point" x="138" y="-68" />
-        <di:waypoint xsi:type="dc:Point" x="139" y="-4" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="138.5" y="-57" width="0" height="12" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1a8thvv_di" bpmnElement="SequenceFlow_1a8thvv">
         <di:waypoint xsi:type="dc:Point" x="346" y="203" />
         <di:waypoint xsi:type="dc:Point" x="346" y="254" />
@@ -154,16 +144,29 @@
       <bpmndi:BPMNShape id="ServiceTask_0gzyh6g_di" bpmnElement="Task_03ur8ra">
         <dc:Bounds x="296" y="123" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="UserTask_0v3u2eg_di" bpmnElement="Task_17cp01h">
-        <dc:Bounds x="90" y="-4" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_0tpt2j4_di" bpmnElement="SequenceFlow_0tpt2j4">
-        <di:waypoint xsi:type="dc:Point" x="140" y="76" />
-        <di:waypoint xsi:type="dc:Point" x="140" y="138" />
+      <bpmndi:BPMNShape id="Shape-StartEvent_1" bpmnElement="StartEvent_1">
+        <dc:Bounds x="124" y="-127" width="32" height="32" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="155" y="101" width="0" height="12" />
+          <dc:Bounds x="-78" y="-229" width="90" height="32" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1pnkor4_di" bpmnElement="SequenceFlow_1pnkor4">
+        <di:waypoint xsi:type="dc:Point" x="140" y="-95" />
+        <di:waypoint xsi:type="dc:Point" x="140" y="-43" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="110" y="-75" width="90" height="12" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_07fp6dl_di" bpmnElement="SequenceFlow_07fp6dl">
+        <di:waypoint xsi:type="dc:Point" x="140" y="37" />
+        <di:waypoint xsi:type="dc:Point" x="140" y="138" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="155" y="81.5" width="0" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0c1ys4c_di" bpmnElement="fill-user-info">
+        <dc:Bounds x="90" y="-43" width="100" height="80" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
