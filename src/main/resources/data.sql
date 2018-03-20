@@ -1,0 +1,2 @@
+INSERT INTO PUBLIC.ACT_ID_USER (ID_, REV_, FIRST_, LAST_, EMAIL_, PWD_, SALT_, PICTURE_ID_) VALUES ('john', 1, 'John', 'Doe', 'john@john.com', '{SHA-512}tnMdoUtYb7JG3Fpdlk4/ff+5Kxrr4Os73nmGE+l6OZIHLFEiFEfBTeMRQFzEz4QrJqg1ktWf9oK701KLyQZ/mA==', 'StajmfYL9ayQ1IPTauMsnA==', null);
+INSERT INTO PUBLIC.ACT_ID_USER (ID_, REV_, FIRST_, LAST_, EMAIL_, PWD_, SALT_, PICTURE_ID_) VALUES ('alex', 1, 'Alexander', 'Doe', 'alex@alex.com', '{SHA-512}XkAcf70lkpZujSy1b6mTu3kTjr4Gc1YuJugKenwswvWFO3E2M2lfaIXJZ95/U6WhQ6Da6QqpbronsZWQUB7xAw==', '8aiefgYGKSv3a6nH+9J4Gw==', null);
