@@ -14,6 +14,11 @@ public class ProcessCarRent implements JavaDelegate {
     private Logger logger = LoggerFactory.getLogger(ProcessCarRent.class);
 
     public void execute(DelegateExecution execution) {
-        logger.info("SPRING BOOT Processing request by '" + execution.getVariable("customerId") + "'...");
+        logger.info("Processing car rental for customer {} for a car {} of type {} of amount {} '",
+                execution.getVariable("customerId"),
+                execution.getVariable("car"),
+                execution.getVariable("car_type"),
+                execution.getVariable("amount")
+                );
     }
 }

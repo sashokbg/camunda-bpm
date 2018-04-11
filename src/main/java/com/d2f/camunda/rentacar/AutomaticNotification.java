@@ -5,11 +5,11 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProcessNotification implements JavaDelegate {
+public class AutomaticNotification implements JavaDelegate {
 
     private Logger logger = LoggerFactory.getLogger("LOAN-REQUESTS");
 
     public void execute(DelegateExecution execution) {
-        logger.info("Notifying user : {} with message {}", execution.getVariable("customerId"), execution.getVariable("notification"));
+        logger.info("Automatic notification for user : {}", execution.getVariable("customerId"));
     }
 }
