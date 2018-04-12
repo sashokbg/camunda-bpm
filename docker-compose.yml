@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  
+  cardiff:
+    build:
+      context: /home/alexander/projects/cardif/camunda-spring-boot/target/docker/ 
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
